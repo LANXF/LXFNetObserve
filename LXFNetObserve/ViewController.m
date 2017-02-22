@@ -7,13 +7,11 @@
 //
 
 #import "ViewController.h"
-#import "Reachability.h"
 #import "LXFNetObserverHelper.h"
 
 @interface ViewController ()
 
 @property (weak, nonatomic) IBOutlet UILabel *internetConnectionStatusField;
-@property (nonatomic, strong) Reachability *internetReachability;
 
 @end
 
@@ -24,7 +22,24 @@
     
     //开始监听网络
     [[LXFNetObserverHelper sharedInstance] startListening:^(LXFNetworkStatus status) {
-        [self updateInterfaceWithRachability:status];
+        switch (status) {
+            case LXFNetworkStatusNotReachable:
+                //            NSLog(@"不可用");
+                _internetConnectionStatusField.text = @"不可以";
+                break;
+            case LXFNetworkStatus3G:
+                //            NSLog(@"蜂窝数据");
+                _internetConnectionStatusField.text = @"蜂窝数据网络";
+                break;
+            case LXFNetworkStatus4G:
+                //            NSLog(@"蜂窝数据");
+                _internetConnectionStatusField.text = @"蜂窝数据网络";
+                break;
+            case LXFNetworkStatusWIfI:
+                //            NSLog(@"WiFi");
+                _internetConnectionStatusField.text = @"WIFI";
+                break;
+        }
     }];
     
 }
